@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
 import { debounce } from "lodash";
 
-type SearchFormPropsType = {
+type SearchInputPropsType = {
   setQuery: (q: string) => void;
+  error?: string;
 };
 
-const SearchForm: React.FC<SearchFormPropsType> = ({ setQuery }) => {
+const SearchInput: React.FC<SearchInputPropsType> = ({ setQuery, error }) => {
   const [value, setValue] = useState("");
   const debouncedSetQuery = useCallback(debounce(setQuery, 1000), []);
 
@@ -14,13 +15,17 @@ const SearchForm: React.FC<SearchFormPropsType> = ({ setQuery }) => {
   }, [value]);
 
   return (
-    <input
-      name="query"
-      placeholder="Search text"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
+    <div>
+      <input
+        data-testid="search_form"
+        name="query"
+        placeholder="Search text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <span>{error}</span>
+    </div>
   );
 };
 
-export default SearchForm;
+export default SearchInput;
