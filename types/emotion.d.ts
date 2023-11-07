@@ -6,6 +6,7 @@ declare module "@emotion/react" {
       primary: string;
       success: string;
       error: string;
+      disabled: string;
     };
   }
 }
