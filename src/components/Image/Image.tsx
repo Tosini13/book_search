@@ -27,6 +27,25 @@ const ImageStyled = styled.img<{ state: ImageStateType }>`
     "opacity: 0;"}
 `;
 
+const Shiner = styled.div`
+  @keyframes shine {
+    to {
+      background-position-x: -200%;
+    }
+  }
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 5px;
+  background-size: 200% 100%;
+  animation: 1s shine linear infinite;
+  opacity: 0.7;
+  height: 100%;
+  width: 100%;
+`;
+
 const LabelStyled = styled.p`
   color: ${(props) => props.theme.color.disabled};
   text-align: center;
@@ -39,7 +58,7 @@ const LabelStyled = styled.p`
 
 const LogoContainer = styled.div`
   width: 100%;
-  aspect-ratio: 1/1;
+  height: 100%;
   display: grid;
   place-content: center;
   position: absolute;
@@ -68,9 +87,12 @@ const Image: React.FC<ImagePropsType> = ({ imgSrc, alt }) => {
       </LogoContainer>
     ),
     [imageState.LOADING]: (
-      <LogoContainer data-testid="loading_icon">
-        <BookIcon color={theme.color.primary} />
-      </LogoContainer>
+      <>
+        <LogoContainer data-testid="loading_icon">
+          <BookIcon color={theme.color.primary} />
+        </LogoContainer>
+        <Shiner />
+      </>
     ),
     [imageState.SUCCESS]: null,
     [imageState.EMPTY]: (
@@ -84,9 +106,10 @@ const Image: React.FC<ImagePropsType> = ({ imgSrc, alt }) => {
     <div
       data-testid="image"
       className={css`
-        relative;
+        position: relative;
         width: 100%;
         aspect-ratio: 2/3;
+        background-color: #fafafa;
       `}
     >
       {stateIcon}

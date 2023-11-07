@@ -7,51 +7,29 @@ import Image from "../Image/Image";
 const BookContainer = styled.div`
   cursor: pointer;
   text-align: center;
-  width: 200px;
+  width: 170px;
   margin-left: auto;
   margin-right: auto;
-  position: relative;
-  border-radius: 0.5rem;
-  background: rgb(10, 11, 26);
-  background: linear-gradient(
-    180deg,
-    rgba(10, 11, 26, 0.8) 0%,
-    rgba(10, 11, 26, 0.3) 100%
-  );
-  overflow: hidden;
-  box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 0.2rem;
+  background-color: white;
+  border: 1px solid #eeeeee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  height: fit-content;
+  margin-top: 5rem;
+  gap: 0.4rem;
+
+  box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0);
   &:hover {
-    box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.2);
-    & > div {
-      transform: translateY(0px);
-      box-shadow: inset 0px 11px 16px -10px rgba(0, 0, 0, 0.2);
-    }
+    box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.1);
     & > img {
       scale: 1.01;
     }
   }
   transition-property: box-shadow, opacity;
   transition-duration: 0.2s;
-`;
-
-const BookLabel = styled.div`
-  z-index: 2;
-  position: absolute;
-  background-color: #c4c1a7;
-  bottom: 0;
-  width: 100%;
-  box-shadow: inset 0px 11px 16px -10px rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem;
-  box-sizing: border-box;
-  height: 6rem;
-  transform: translateY(36px);
-  transition-property: transform, box-shadow;
-  transition-duration: 0.2s;
-  transition-timing-function: ease-out;
 `;
 
 const TitleLabel = styled.p`
@@ -71,7 +49,7 @@ const AuthorLabel = styled.p`
   font-size: 0.7rem;
   opacity: 0.6;
   line-height: 1rem;
-  height: 1.8rem;
+  overflow: hidden;
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -86,26 +64,42 @@ const BookListItem: React.FC<BookListItemPropsType> = ({ book }) => {
   const theme = useTheme();
   return (
     <BookContainer data-testid="book_list_item">
-      <Image
-        imgSrc={book.volumeInfo.imageLinks?.thumbnail}
-        alt={`${book.volumeInfo.title} cover`}
-      />
-      <BookLabel>
-        <div
-          className={css`
-            height: 3rem;
-            display: grid;
-            place-content: center;
-          `}
-        >
-          <TitleLabel>{book.volumeInfo.title}</TitleLabel>
-        </div>
+      <div
+        className={css`
+          margin-top: -5rem;
+          box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          border-radius: 0.2rem;
+          width: 80%;
+        `}
+      >
+        <Image
+          imgSrc={book.volumeInfo.imageLinks?.thumbnail}
+          alt={`${book.volumeInfo.title} cover`}
+        />
+      </div>
+      <div
+        className={css`
+          height: 3rem;
+          display: grid;
+          place-content: center;
+        `}
+      >
+        <TitleLabel>{book.volumeInfo.title}</TitleLabel>
+      </div>
+      <div
+        className={css`
+          height: 1.8rem;
+          display: grid;
+          place-content: center;
+        `}
+      >
         <AuthorLabel>
           {book.volumeInfo.authors?.length > 0
             ? book.volumeInfo.authors?.join(", ")
             : "No Authors"}
         </AuthorLabel>
-      </BookLabel>
+      </div>
     </BookContainer>
   );
 };
