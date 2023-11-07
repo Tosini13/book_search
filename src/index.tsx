@@ -3,25 +3,19 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider } from "@emotion/react";
-
-const theme = {
-  color: {
-    primary: "#0a0b1a",
-    success: "green",
-    error: "red",
-  },
-};
+import { QueryClient } from "@tanstack/react-query";
+import GlobalProviders from "./Providers";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <GlobalProviders>
       <App />
-    </ThemeProvider>
+    </GlobalProviders>
   </React.StrictMode>
 );
 
