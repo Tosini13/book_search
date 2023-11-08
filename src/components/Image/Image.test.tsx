@@ -1,7 +1,5 @@
-import React from "react";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import Image, { imageState } from "./Image"; // Import your component and its related constants/types
+import { fireEvent, screen } from "@testing-library/react";
+import Image from "./Image"; // Import your component and its related constants/types
 import { render } from "../../test-util";
 
 describe("Image Component", () => {
