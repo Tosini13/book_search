@@ -61,7 +61,6 @@ type BookListItemPropsType = {
 };
 
 const BookListItem: React.FC<BookListItemPropsType> = ({ book }) => {
-  const theme = useTheme();
   return (
     <BookContainer data-testid="book_list_item">
       <div
