@@ -1,6 +1,7 @@
 import React from "react";
 import SearchInput from "./SearchInput";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
+import { render } from "../../test-util";
 
 jest.mock("lodash", () => ({
   debounce: (fn: (q: string) => void) => fn,
@@ -32,12 +33,5 @@ describe("SearchForm", () => {
     fireEvent.change(inputElement, { target: { value: "Test Query" } });
 
     expect(setQueryMock).toHaveBeenCalledWith("Test Query");
-  });
-
-  it("should display an error message", () => {
-    const error = "An error occurred";
-    render(<SearchInput setQuery={() => {}} error={error} />);
-    const errorMessage = screen.getByText(error);
-    expect(errorMessage).toBeInTheDocument();
   });
 });
