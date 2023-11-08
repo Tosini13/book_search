@@ -11,20 +11,40 @@ import Pagination from "./components/Pagination/Pagination";
 import BookListItem from "./components/BookList/BookListItem";
 import BookListItemPlaceholder from "./components/BookList/BookListItemPlaceholder";
 import { times } from "lodash";
+import FilterSelect from "./components/SearchForm/FilterSelect";
+
+const filterOptions = {
+  "": "No Filter",
+  partial: "Partial",
+  full: "Full",
+  "free-ebooks": "Free Ebooks",
+  "paid-ebooks": "Paid Ebooks",
+  ebooks: "Ebooks",
+};
 
 const Header = styled.header`
   position: sticky;
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  padding: 1rem 0.2rem;
   box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.1);
   background-color: white;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
   z-index: 10;
+
+  @media (max-width: 440px) {
+    flex-direction: column;
+    align-items: stretch;
+    & > div {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
 `;
 
 const LabelStyled = styled.p`
@@ -38,18 +58,31 @@ const MAX_COUNT_ITEMS_ON_PAGE = 12;
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<string>("");
   const theme = useTheme();
   const placeholderTotalCount = useRef<number>(0);
 
   const { data, status } = useQuery<BookSearchResponseType>({
-    queryKey: ["books", query, currentPage],
+    queryKey: ["books", query, currentPage, filter],
     queryFn: (): Promise<BookSearchResponseType> =>
       fetch(
-        API.getSearchBooks(query, {
-          currentPage: currentPage - 1,
-          maxCount: MAX_COUNT_ITEMS_ON_PAGE,
-        })
-      ).then((res) => res.json()),
+        API.getSearchBooks(
+          query,
+          {
+            currentPage: currentPage - 1,
+            maxCount: MAX_COUNT_ITEMS_ON_PAGE,
+          },
+          filter
+        )
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.error) {
+            throw new Error(res.error.message);
+          }
+
+          return res;
+        }),
     enabled: query.length > 2,
     refetchOnWindowFocus: false,
   });
@@ -62,7 +95,26 @@ function App() {
   return (
     <>
       <Header>
-        <SearchForm setQuery={setQuery} />
+        <div
+          className={css`
+            width: 220px;
+            max-width: 100%;
+          `}
+        >
+          <SearchForm setQuery={setQuery} />
+        </div>
+        <div
+          className={css`
+            width: 220px;
+            max-width: 100%;
+          `}
+        >
+          <FilterSelect
+            value={filter}
+            onChange={setFilter}
+            options={filterOptions}
+          />
+        </div>
       </Header>
       <div
         className={css`
@@ -103,7 +155,7 @@ function App() {
                   There was a problem
                 </LabelStyled>
               ),
-              success: data?.items.length ? (
+              success: data?.items?.length ? (
                 <>
                   <BookList>
                     {data.items.map((item) => (
