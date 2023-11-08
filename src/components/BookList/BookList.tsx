@@ -3,10 +3,10 @@ import { BookType } from "../../types";
 import BookListItem from "./BookListItem";
 
 type BookListPropsType = {
-  books: BookType[];
+  children: React.ReactNode;
 };
 
-const BookList: React.FC<BookListPropsType> = ({ books }) => {
+const BookList: React.FC<BookListPropsType> = ({ children }) => {
   return (
     <div
       data-testid="book_list"
@@ -25,9 +25,7 @@ const BookList: React.FC<BookListPropsType> = ({ books }) => {
         }
       `}
     >
-      {books.map((item) => (
-        <BookListItem key={item.id} book={item} />
-      ))}
+      {children}
     </div>
   );
 };
