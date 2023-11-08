@@ -59,6 +59,7 @@ const InputStyled = styled.input<{ error?: boolean }>`
   font-size: 1rem;
   display: block;
   transition: border-color 150ms;
+  width: 100%;
   &:focus {
     outline: none;
     border-color: ${(props) =>
