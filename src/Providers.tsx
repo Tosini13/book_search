@@ -17,7 +17,13 @@ const GlobalStyle = styled.div`
   color: ${(props) => props.theme.color.primary};
 `;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 type GlobalProvidersPropsType = {
   children: React.ReactNode;
