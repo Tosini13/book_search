@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useMemo } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const Container = styled.div`
   display: flex;
@@ -7,6 +8,11 @@ const Container = styled.div`
   align-items: center;
   margin-top: 20px;
   gap: 10px;
+
+  @media (max-width: 600px) {
+    display: grid;
+    grid-template-areas: "prev next" "pages pages";
+  }
 `;
 
 const BulletsContainerStyled = styled.div`
@@ -56,6 +62,10 @@ const ArrowStyled = styled.button`
   background-color: ${(props) => props.theme.color.primary};
   color: white;
   opacity: 1;
+  @media (max-width: 600px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
   transition-property: background-color;
   transition-duration: 0.2s;
   &:hover {
@@ -63,8 +73,8 @@ const ArrowStyled = styled.button`
   }
 `;
 
-const MAX_VISIBLE_PAGES = 7;
-const HALF_MAX_VISIBLE_PAGES = Math.floor(MAX_VISIBLE_PAGES / 2);
+const MAX_VISIBLE_PAGES_DESKTOP = 7;
+const MAX_VISIBLE_PAGES_MOBILE = 5;
 
 interface PaginationProps {
   currentPage: number;
@@ -79,33 +89,36 @@ const Pagination: React.FC<PaginationProps> = ({
   setCurrentPage,
   disabled,
 }) => {
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
+  const maxVisiblePages = isTabletOrMobile
+    ? MAX_VISIBLE_PAGES_MOBILE
+    : MAX_VISIBLE_PAGES_DESKTOP;
+  const halfMaxVisiblePages = Math.floor(maxVisiblePages / 2);
+
   const visiblePages = useMemo(() => {
-    if (totalPages <= MAX_VISIBLE_PAGES) {
+    if (totalPages <= maxVisiblePages) {
       return [...Array.from({ length: totalPages }, (_, index) => index + 1)];
     }
-    if (currentPage - 1 <= HALF_MAX_VISIBLE_PAGES) {
+    if (currentPage - 1 <= halfMaxVisiblePages) {
       return [
-        ...Array.from(
-          { length: MAX_VISIBLE_PAGES - 2 },
-          (_, index) => index + 1
-        ),
+        ...Array.from({ length: maxVisiblePages - 2 }, (_, index) => index + 1),
         "BACK_DOTS",
         totalPages,
       ];
     }
-    if (currentPage >= totalPages - HALF_MAX_VISIBLE_PAGES) {
+    if (currentPage >= totalPages - halfMaxVisiblePages) {
       return [
         1,
         "FRONT_DOTS",
         ...Array.from(
-          { length: MAX_VISIBLE_PAGES - 2 },
-          (_, index) => totalPages - (MAX_VISIBLE_PAGES - 2) + index + 1
+          { length: maxVisiblePages - 2 },
+          (_, index) => totalPages - (maxVisiblePages - 2) + index + 1
         ),
       ];
     }
@@ -113,8 +126,8 @@ const Pagination: React.FC<PaginationProps> = ({
       1,
       "FRONT_DOTS",
       ...Array.from(
-        { length: MAX_VISIBLE_PAGES - 4 },
-        (_, index) => currentPage - HALF_MAX_VISIBLE_PAGES + 2 + index
+        { length: maxVisiblePages - 4 },
+        (_, index) => currentPage - halfMaxVisiblePages + 2 + index
       ),
       "BACK_DOTS",
       totalPages,
@@ -126,10 +139,31 @@ const Pagination: React.FC<PaginationProps> = ({
       <ArrowStyled
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1 || disabled}
+        style={{
+          gridArea: "prev",
+        }}
       >
-        {"<"}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.8"
+          stroke="currentColor"
+          height="1.3rem"
+          width="1.3rem"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+          />
+        </svg>
       </ArrowStyled>
-      <BulletsContainerStyled>
+      <BulletsContainerStyled
+        style={{
+          gridArea: "pages",
+        }}
+      >
         {visiblePages.map((page) => {
           let className = "";
           if (currentPage === page) {
@@ -157,8 +191,25 @@ const Pagination: React.FC<PaginationProps> = ({
       <ArrowStyled
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages || disabled}
+        style={{
+          gridArea: "next",
+        }}
       >
-        {">"}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.8"
+          stroke="currentColor"
+          height="1.3rem"
+          width="1.3rem"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+          />
+        </svg>
       </ArrowStyled>
     </Container>
   );
