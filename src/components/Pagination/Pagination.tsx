@@ -142,6 +142,7 @@ const Pagination: React.FC<PaginationProps> = ({
         style={{
           gridArea: "prev",
         }}
+        data-testid="arrow_prev"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -194,6 +195,7 @@ const Pagination: React.FC<PaginationProps> = ({
         style={{
           gridArea: "next",
         }}
+        data-testid="arrow_next"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

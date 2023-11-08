@@ -17,19 +17,19 @@ describe("Pagination Component", () => {
 
   it("renders correctly", () => {
     render(<Pagination {...defaultProps} />);
-    expect(screen.getByText("<")).toBeInTheDocument();
-    expect(screen.getByText(">")).toBeInTheDocument();
+    expect(screen.getByTestId("arrow_prev")).toBeInTheDocument();
+    expect(screen.getByTestId("arrow_next")).toBeInTheDocument();
   });
 
   it("disables the previous button when on the first page", () => {
     render(<Pagination {...defaultProps} currentPage={1} />);
-    const prevButton = screen.getByText("<");
+    const prevButton = screen.getByTestId("arrow_prev");
     expect(prevButton).toHaveAttribute("disabled");
   });
 
   it("disables the next button when on the last page", () => {
     render(<Pagination {...defaultProps} currentPage={10} />);
-    const nextButton = screen.getByText(">");
+    const nextButton = screen.getByTestId("arrow_next");
     expect(nextButton).toHaveAttribute("disabled");
   });
 
