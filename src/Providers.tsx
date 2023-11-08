@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 const theme = {
   color: {
     primary: "#0c0e24",
+    secondary: "#F3F3F3",
     success: "green",
     error: "red",
     disabled: "#303338",
