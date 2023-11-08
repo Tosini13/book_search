@@ -7,7 +7,7 @@ jest.mock("lodash", () => ({
   debounce: (fn: (q: string) => void) => fn,
 }));
 
-describe("SearchForm", () => {
+describe("SearchInput", () => {
   it("renders the component correctly", () => {
     render(<SearchInput setQuery={() => {}} />);
     const inputElement = screen.getByTestId("search_form");
