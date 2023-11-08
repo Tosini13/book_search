@@ -78,10 +78,9 @@ const InputContainerStyled = styled.div`
 
 type SearchInputPropsType = {
   setQuery: (q: string) => void;
-  error?: string;
 };
 
-const SearchInput: React.FC<SearchInputPropsType> = ({ setQuery, error }) => {
+const SearchInput: React.FC<SearchInputPropsType> = ({ setQuery }) => {
   const [value, setValue] = useState("");
   const debouncedSetQuery = useCallback(debounce(setQuery, 1000), []);
 
