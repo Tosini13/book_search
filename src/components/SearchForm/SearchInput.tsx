@@ -113,11 +113,13 @@ const SearchInput: React.FC<SearchInputPropsType> = ({ setQuery, error }) => {
             opacity: 0.8;
           }
         `}
-        onClick={() => setValue("")}
+        onClick={() => {
+          setValue("");
+          setQuery("");
+        }}
       >
         <CloseLogo />
       </div>
-      {/* <span>{error}</span> */}
     </InputContainerStyled>
   );
 };
